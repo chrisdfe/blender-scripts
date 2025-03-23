@@ -5,7 +5,7 @@ def rename_uv_layer_for_all_selected(current_name, new_name):
     Renames all UV Layers with the name current_name to new_name
     Especially helpful when working with multiple UV layers across multiple objects
 
-    Paramteters:
+    Parameters:
     current_name (string): the current name of the UV layer to rename
     new_name (string): the new name of the UV layer
     """
