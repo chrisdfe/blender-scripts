@@ -2,15 +2,33 @@ import bpy
 
 TARGET_NODE_NAMES = ["Principled BSDF"]
 
-# Test
-
-
+def srgb_to_linear(c):
+    """
+    Converts a single sRGB color channel value (0.0 to 1.0) 
+    to a linear color channel value (0.0 to 1.0).
+    """
+    if c < 0:
+        return 0
+    elif c < 0.04045:
+        return c / 12.92
+    else:
+        return ((c + 0.055) / 1.055) ** 2.4    
 
 def get_emission_node(mat):
     """
     Returns the emission color node in a material, if it exists
     and the Emission Strength property is not set to 0
     """    
+
+    if not mat:
+        return None
+
+    if not mat.node_tree:
+        return None
+   
+    if not mat.node_tree.nodes:
+        return None
+
     for node in mat.node_tree.nodes:
         is_target_node = False
         
@@ -65,8 +83,7 @@ def hex_to_normalized_rgb(hex):
 
 def update_all_emission_colors(new_color):
     """
-    Updates the emission color of all materials in the project
-    that have a Principled BSDF node with the Emission Color set to greater than 0
+    Updates the emission color of all matching materials in the project
     """
     if isinstance(new_color, str):
         new_color_tuple = hex_to_normalized_rgb(new_color)
@@ -82,22 +99,9 @@ def update_all_emission_colors(new_color):
         else:
             print(f'Not updating emission for {mat.name}')
 
-def srgb_to_linear(c):
+class UpdateGlobalEmissionColorOperator(bpy.types.Operator):
     """
-    Converts a single sRGB color channel value (0.0 to 1.0) 
-    to a linear color channel value (0.0 to 1.0).
-    """
-    if c < 0:
-        return 0
-    elif c < 0.04045:
-        return c / 12.92
-    else:
-        return ((c + 0.055) / 1.055) ** 2.4    
-
-
-class OBJECT_OT_update_global_emission_color(bpy.types.Operator):
-    """
-    Prints the color
+    Button that 
     """
     bl_idname = "object.update_global_emission_color"
     bl_label = "Set the emission color of all materials in scene"
@@ -112,36 +116,7 @@ class OBJECT_OT_update_global_emission_color(bpy.types.Operator):
 
         return {'FINISHED'}
 
-
-class OBJECT_PT_SweaterparrotFunctionsPanel(bpy.types.Panel):
-    """
-    Creates a panel for functions I commonly use
-    """
-    bl_label = "Sweaterparrot Functions"
-    bl_idname = "OBJECT_PT_sweaterparrot_functions"
-    bl_space_type = "PROPERTIES"
-    bl_region_type = "WINDOW"
-    bl_context = "render"
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-
-        row = layout.row()
-
-        layout.label(text="Update global emission color", icon='WORLD_DATA')
-
-        layout.prop(scene, "new_global_emission_color", text="New global emission color")
-
-        layout.operator(OBJECT_OT_update_global_emission_color.bl_idname)
-
-CLASSES = [
-    OBJECT_OT_update_global_emission_color,
-    OBJECT_PT_SweaterparrotFunctionsPanel
-]
-
 def register():
-    # TODO - don't do this here, have this be a function in SweaterparrotFunctionsPanel or something
     bpy.types.Scene.new_global_emission_color = bpy.props.FloatVectorProperty(
         name="New global emission color",
         subtype='COLOR',
@@ -151,17 +126,10 @@ def register():
         max=1.0,
     )
 
-    for cls in CLASSES:
-        bpy.utils.register_class(cls)
+    bpy.utils.register_class(UpdateGlobalEmissionColorOperator)
 
 def unregister():
-    for cls in CLASSES:
-        bpy.utils.unregister_class(cls)
+    bpy.utils.unregister_class(UpdateGlobalEmissionColorOperator)
 
-    # TODO - don't do this here, have this be a function in SweaterparrotFunctionsPanel or something
     del bpy.types.Scene.new_global_emission_color
 
-if __name__ == "__main__":
-    register()
-
-# #5C1D2BFF
