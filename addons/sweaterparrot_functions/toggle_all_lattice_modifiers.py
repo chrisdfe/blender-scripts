@@ -7,28 +7,29 @@ def set_all_lattice_modifiers_viewport_visibility(should_be_active):
         if mod.type == 'LATTICE':
           mod.show_viewport = should_be_active
 
-class ToggleAllLatticeModifiersOperator(bpy.types.Operator):
-    """
-    Button that 
-    """
-    bl_idname = "object.toggle_all_lattice_modifiers"
-    bl_label = "Show/hide all lattice objects in scene"
+def execute(self, context):
+    global_lattice_show_viewport = context.scene.global_lattice_show_viewport
+    set_all_lattice_modifiers_viewport_visibility(global_lattice_show_viewport)
 
-    def execute(self, context):
-        global_lattice_show_viewport = context.scene.global_lattice_show_viewport
-        set_all_lattice_modifiers_viewport_visibility(global_lattice_show_viewport)
+    return {'FINISHED'}
 
-        return {'FINISHED'}
+class ToggleAllLatticeModifiers:
+  def register(self):
+      bpy.types.Scene.global_lattice_show_viewport = bpy.props.BoolProperty(
+          name="Show/hide all lattice objects in scene",
+          default=True,
+          update=execute
+      )
 
-def register():
-    bpy.types.Scene.global_lattice_show_viewport = bpy.props.BoolProperty(
-        name="Show/hide all lattice objects in scene",
-        default=True
-    )
+  def unregister(self):
+      del bpy.types.Scene.global_lattice_show_viewport
 
-    bpy.utils.register_class(ToggleAllLatticeModifiersOperator)
+  def draw(self, layout, context):
+      scene = context.scene
 
-def unregister():
-    bpy.utils.unregister_class(ToggleAllLatticeModifiersOperator)
+      row = layout.row()
 
-    del bpy.types.Scene.new_global_emission_color
+      layout.label(text="Toggle all lattice modifiers", icon='LATTICE_DATA')
+      layout.prop(scene, "global_lattice_show_viewport", text="Show/hide all lattice objects in scene")
+
+TOGGLE_ALL_LATTICE_MODIFIERS = ToggleAllLatticeModifiers()

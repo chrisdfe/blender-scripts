@@ -14,6 +14,8 @@ def srgb_to_linear(c):
     else:
         return ((c + 0.055) / 1.055) ** 2.4    
 
+
+# TODO - This function doesn't handle default node-less PrinciepledBSDF nodes
 def get_emission_node(mat):
     """
     Returns the emission color node in a material, if it exists
@@ -116,20 +118,31 @@ class UpdateGlobalEmissionColorOperator(bpy.types.Operator):
 
         return {'FINISHED'}
 
-def register():
-    bpy.types.Scene.new_global_emission_color = bpy.props.FloatVectorProperty(
-        name="New global emission color",
-        subtype='COLOR',
-        default=(0.0, 0.0, 0.0, 1.0),
-        size=4,
-        min=0.0,
-        max=1.0,
-    )
+class UpdateAllEmissionColors:
+    def register(self):
+        bpy.types.Scene.new_global_emission_color = bpy.props.FloatVectorProperty(
+            name="New global emission color",
+            subtype='COLOR',
+            default=(0.0, 0.0, 0.0, 1.0),
+            size=4,
+            min=0.0,
+            max=1.0,
+        )
 
-    bpy.utils.register_class(UpdateGlobalEmissionColorOperator)
+        bpy.utils.register_class(UpdateGlobalEmissionColorOperator)
 
-def unregister():
-    bpy.utils.unregister_class(UpdateGlobalEmissionColorOperator)
+    def unregister(self,):
+        bpy.utils.unregister_class(UpdateGlobalEmissionColorOperator)
 
-    del bpy.types.Scene.new_global_emission_color
+        del bpy.types.Scene.new_global_emission_color
 
+    def draw(self, layout, context):
+        scene = context.scene
+
+        row = layout.row()
+
+        layout.label(text="Update global emission color", icon='WORLD_DATA')
+        layout.prop(scene, "new_global_emission_color", text="New global emission color")
+        layout.operator(UpdateGlobalEmissionColorOperator.bl_idname)
+
+UPDATE_ALL_EMISSION_COLORS = UpdateAllEmissionColors()
