@@ -29,7 +29,6 @@ class ToggleAllLatticeModifiers:
 
       row = layout.row()
 
-      layout.label(text="Toggle all lattice modifiers", icon='LATTICE_DATA')
-      layout.prop(scene, "global_lattice_show_viewport", text="Show/hide all lattice objects in scene")
+      layout.prop(scene, "global_lattice_show_viewport", text="Show/hide all lattice objects in viewport")
 
 TOGGLE_ALL_LATTICE_MODIFIERS = ToggleAllLatticeModifiers()

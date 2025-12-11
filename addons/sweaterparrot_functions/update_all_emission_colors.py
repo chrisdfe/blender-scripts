@@ -141,7 +141,6 @@ class UpdateAllEmissionColors:
 
         row = layout.row()
 
-        layout.label(text="Update global emission color", icon='WORLD_DATA')
         layout.prop(scene, "new_global_emission_color", text="New global emission color")
         layout.operator(UpdateGlobalEmissionColorOperator.bl_idname)
 
