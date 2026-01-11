@@ -2,6 +2,7 @@ import bpy
 
 from .update_all_emission_colors import UPDATE_ALL_EMISSION_COLORS
 from .toggle_all_lattice_modifiers import TOGGLE_ALL_LATTICE_MODIFIERS
+from . import toggle_global_local_keybinding 
 
 bl_info = {
     "name": "Sweaterparrot Functions",
@@ -35,11 +36,12 @@ def register():
 
     TOGGLE_ALL_LATTICE_MODIFIERS.register()
     UPDATE_ALL_EMISSION_COLORS.register()
-
+    toggle_global_local_keybinding.register()
 
 def unregister():
     TOGGLE_ALL_LATTICE_MODIFIERS.unregister()
     UPDATE_ALL_EMISSION_COLORS.unregister()
+    toggle_global_local_keybinding.unregister()
 
     bpy.utils.unregister_class(SweaterparrotFunctionsPanel)
 
