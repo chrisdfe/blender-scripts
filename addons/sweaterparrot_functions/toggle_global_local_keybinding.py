@@ -8,14 +8,14 @@ class ViewportOrientationToggler(bpy.types.Operator):
     bl_label = "Toggle Global/Local Orientation"
 
     def execute(self, context):
-        slots = context.scene.transform_orientation_slots
+        slot = context.scene.transform_orientation_slots[0]
 
-        if slots.type == 'GLOBAL':
-            slots.type = 'LOCAL'
+        if slot.type == 'GLOBAL':
+            slot.type = 'LOCAL'
         else:
-            slots.type = 'GLOBAL'
+            slot.type = 'GLOBAL'
         
-        self.report({'INFO'}, f"New orientation: {slots.type}")
+        self.report({'INFO'}, f"New orientation: {slot.type}")
 
         return {'FINISHED'}
 
