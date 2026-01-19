@@ -6,7 +6,7 @@ class SeamsFromSharp(bpy.types.Operator):
   Marks all selected sharp edges as seam 
   """
   bl_idname = "mesh.mark_sharp_as_seams"
-  bl_label = "Seams from Sharp Edges"
+  bl_label = "Mark Sharp Edges as Seams"
   bl_options = {'REGISTER', 'UNDO'}
 
   @classmethod
