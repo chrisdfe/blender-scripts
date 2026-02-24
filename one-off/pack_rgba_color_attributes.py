@@ -50,7 +50,7 @@ def replace_channel_with_new_color(current_color, new_color, channel):
 def set_channel_data_to_static_color_on_attribute(dest_attr, color_value, channel):
   validate_channel(channel)  
 
-  print(f"writing the static color ({color_value}) to channel {channel} on {dest_attr}")
+  print(f"Writing the static color ({color_value}) to channel {channel} on {dest_attr.name}")
 
   for i in range(len(dest_attr.data)):
     current_color = dest_attr.data[i].color
@@ -66,7 +66,7 @@ def copy_channel_data_to_attribute(dest_attr, source_attr, channel):
   channel: string - must be 'r', 'g', 'b', or 'a'
   """
   if (len(source_attr.data) != len(dest_attr.data)):
-    raise Exception(f"attr lengths not equal: {source_attr.name} has a length of {len(source_attr)} and {dest_attr.name} has a length of {len(dest_attr)}")
+    raise Exception(f"attr lengths not equal: {source_attr.name} has a length of {len(source_attr.data)} and {dest_attr.name} has a length of {len(dest_attr.data)}")
   
   validate_channel(channel)  
 
@@ -78,6 +78,7 @@ def copy_channel_data_to_attribute(dest_attr, source_attr, channel):
     
     new_color_on_channel = replace_channel_with_new_color(current_color, new_color, channel)
     dest_attr.data[i].color = new_color_on_channel
+    # dest_attr.data[i].color = (0, 0, 1, 1)
 
 def pack_rgb_color_attributes_in_obj(obj):
   """
@@ -137,13 +138,24 @@ def pack_rgb_color_attributes_in_obj(obj):
   ]
 
   print(f"Writing to {obj.name}")
+
   for (channel, layer) in channel_layer_tuples:
     if layer is None:
       set_channel_data_to_static_color_on_attribute(vertex_color_layer, BLACK, channel)
     else:
       copy_channel_data_to_attribute(vertex_color_layer, layer, channel)
 
+  print("Done.")
+
 def pack_rgb_color_attributes_in_selected():
+  """
+  Iterates through each selected and unpacks color attributes for each
+  Must be in object mode for this script to run at all.
+  """
+
+  if bpy.context.mode != 'OBJECT':
+    raise RuntimeError("User must be in Object Mode to run this script.")
+
   for obj in bpy.context.selected_objects:
     if obj.type != 'MESH':
       print(f"Object {obj.name} is not a mesh (is {obj.type}). skipping")
