@@ -57,8 +57,14 @@ def set_channel_data_to_static_color_on_attribute(dest_attr, color_value, channe
     new_color = replace_channel_with_new_color(current_color, color_value, channel)
     dest_attr.data[i].color = new_color
 
-# channel == a string, either 'r', 'g', 'b', or 'a'
 def copy_channel_data_to_attribute(dest_attr, source_attr, channel):
+  """
+  Copies the color data from source_attr to dest_attr on a specific channel (r, g, b, or a)
+
+  dest_attr: ColorAttribute
+  source_attr: ColorAttribute
+  channel: string - must be 'r', 'g', 'b', or 'a'
+  """
   if (len(source_attr.data) != len(dest_attr.data)):
     raise Exception(f"attr lengths not equal: {source_attr.name} has a length of {len(source_attr)} and {dest_attr.name} has a length of {len(dest_attr)}")
   
@@ -74,6 +80,21 @@ def copy_channel_data_to_attribute(dest_attr, source_attr, channel):
     dest_attr.data[i].color = new_color_on_channel
 
 def pack_rgb_color_attributes_in_obj(obj):
+  """
+  Packs channels from color attributes into the 0th color attribute, as per this naming convention:
+
+  if the channel's name ends with (including parentheses):
+    '(R)': red channel
+    '(G)': green channel
+    '(B)': blue channel
+    '(A)': alpha channel
+
+  The 0th color attribute will be overwritten with the red channel from (R), green channel from (G), and so on.
+  Unity only supports a single vertex color, which corresponds to the 0th color attribute in blender.
+  If a color channel for a specific color is missing, then that channel will be set to black.
+  If none of these channel color attributes are present (i.e if the object has 0 or only 1 color attribute) then no data will be written.
+  """
+
   mesh = obj.data
   if not mesh.color_attributes:
     print(f"Object {obj.name} has no color attribute layers")
