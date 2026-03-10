@@ -13,22 +13,19 @@ def execute(self, context):
 
     return {'FINISHED'}
 
-class ToggleAllLatticeModifiers:
-  def register(self):
-      bpy.types.Scene.global_lattice_show_viewport = bpy.props.BoolProperty(
-          name="Show/hide all lattice objects in scene",
-          default=True,
-          update=execute
-      )
+def register(self):
+    bpy.types.Scene.global_lattice_show_viewport = bpy.props.BoolProperty(
+        name="Show/hide all lattice objects in scene",
+        default=True,
+        update=execute
+    )
 
-  def unregister(self):
-      del bpy.types.Scene.global_lattice_show_viewport
+def unregister(self):
+    del bpy.types.Scene.global_lattice_show_viewport
 
-  def draw(self, layout, context):
-      scene = context.scene
+def draw(self, layout, context):
+    scene = context.scene
 
-      row = layout.row()
+    row = layout.row()
 
-      layout.prop(scene, "global_lattice_show_viewport", text="Show/hide all lattice objects in viewport")
-
-TOGGLE_ALL_LATTICE_MODIFIERS = ToggleAllLatticeModifiers()
+    layout.prop(scene, "global_lattice_show_viewport", text="Show/hide all lattice objects in viewport")

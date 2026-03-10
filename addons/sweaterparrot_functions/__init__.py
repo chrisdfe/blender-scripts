@@ -1,9 +1,10 @@
 import bpy
 
-from .update_all_emission_colors import UPDATE_ALL_EMISSION_COLORS
-from .toggle_all_lattice_modifiers import TOGGLE_ALL_LATTICE_MODIFIERS
+from . import update_all_emission_colors
+from . import toggle_all_lattice_modifiers 
 from . import toggle_global_local_keybinding 
 from . import mark_sharp_as_seam_and_unwrap 
+from . import remove_vertex_crease
 
 bl_info = {
     "name": "Sweaterparrot Functions",
@@ -29,22 +30,24 @@ class SweaterparrotFunctionsPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        TOGGLE_ALL_LATTICE_MODIFIERS.draw(layout, context)
-        UPDATE_ALL_EMISSION_COLORS.draw(layout, context)
+        toggle_all_lattice_modifiers.draw(layout, context)
+        update_all_emission_colors.draw(layout, context)
 
 def register():
     bpy.utils.register_class(SweaterparrotFunctionsPanel)
 
-    TOGGLE_ALL_LATTICE_MODIFIERS.register()
-    UPDATE_ALL_EMISSION_COLORS.register()
+    toggle_all_lattice_modifiers.register()
+    update_all_emission_colors.register()
     toggle_global_local_keybinding.register()
     mark_sharp_as_seam_and_unwrap.register()
+    remove_vertex_crease.register()
 
 def unregister():
-    TOGGLE_ALL_LATTICE_MODIFIERS.unregister()
-    UPDATE_ALL_EMISSION_COLORS.unregister()
+    toggle_all_lattice_modifiers.unregister()
+    update_all_emission_colors.unregister()
     toggle_global_local_keybinding.unregister()
     mark_sharp_as_seam_and_unwrap.unregister()
+    remove_vertex_crease.unregister()
 
     bpy.utils.unregister_class(SweaterparrotFunctionsPanel)
 

@@ -118,30 +118,27 @@ class UpdateGlobalEmissionColorOperator(bpy.types.Operator):
 
         return {'FINISHED'}
 
-class UpdateAllEmissionColors:
-    def register(self):
-        bpy.types.Scene.new_global_emission_color = bpy.props.FloatVectorProperty(
-            name="New global emission color",
-            subtype='COLOR',
-            default=(0.0, 0.0, 0.0, 1.0),
-            size=4,
-            min=0.0,
-            max=1.0,
-        )
+def register(self):
+    bpy.types.Scene.new_global_emission_color = bpy.props.FloatVectorProperty(
+        name="New global emission color",
+        subtype='COLOR',
+        default=(0.0, 0.0, 0.0, 1.0),
+        size=4,
+        min=0.0,
+        max=1.0,
+    )
 
-        bpy.utils.register_class(UpdateGlobalEmissionColorOperator)
+    bpy.utils.register_class(UpdateGlobalEmissionColorOperator)
 
-    def unregister(self,):
-        bpy.utils.unregister_class(UpdateGlobalEmissionColorOperator)
+def unregister(self):
+    bpy.utils.unregister_class(UpdateGlobalEmissionColorOperator)
 
-        del bpy.types.Scene.new_global_emission_color
+    del bpy.types.Scene.new_global_emission_color
 
-    def draw(self, layout, context):
-        scene = context.scene
+def draw(self, layout, context):
+    scene = context.scene
 
-        row = layout.row()
+    row = layout.row()
 
-        layout.prop(scene, "new_global_emission_color", text="New global emission color")
-        layout.operator(UpdateGlobalEmissionColorOperator.bl_idname)
-
-UPDATE_ALL_EMISSION_COLORS = UpdateAllEmissionColors()
+    layout.prop(scene, "new_global_emission_color", text="New global emission color")
+    layout.operator(UpdateGlobalEmissionColorOperator.bl_idname)
