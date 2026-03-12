@@ -103,7 +103,7 @@ def update_all_emission_colors(new_color):
 
 class UpdateGlobalEmissionColorOperator(bpy.types.Operator):
     """
-    Button that 
+    Button that runs update_all_emision_colors using the color selected in the UI
     """
     bl_idname = "object.update_global_emission_color"
     bl_label = "Set the emission color of all materials in scene"
@@ -118,7 +118,7 @@ class UpdateGlobalEmissionColorOperator(bpy.types.Operator):
 
         return {'FINISHED'}
 
-def register(self):
+def register():
     bpy.types.Scene.new_global_emission_color = bpy.props.FloatVectorProperty(
         name="New global emission color",
         subtype='COLOR',
@@ -130,12 +130,12 @@ def register(self):
 
     bpy.utils.register_class(UpdateGlobalEmissionColorOperator)
 
-def unregister(self):
+def unregister():
     bpy.utils.unregister_class(UpdateGlobalEmissionColorOperator)
 
     del bpy.types.Scene.new_global_emission_color
 
-def draw(self, layout, context):
+def draw_panel_ui(layout, context):
     scene = context.scene
 
     row = layout.row()

@@ -6,6 +6,7 @@ class ViewportOrientationToggler(bpy.types.Operator):
     """
     bl_idname = "view3d.toggle_global_local"
     bl_label = "Toggle Global/Local Orientation"
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
         slot = context.scene.transform_orientation_slots[0]

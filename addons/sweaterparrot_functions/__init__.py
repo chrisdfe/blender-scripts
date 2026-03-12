@@ -30,8 +30,9 @@ class SweaterparrotFunctionsPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        toggle_all_lattice_modifiers.draw(layout, context)
-        update_all_emission_colors.draw(layout, context)
+        toggle_all_lattice_modifiers.draw_panel_ui(layout, context)
+        update_all_emission_colors.draw_panel_ui(layout, context)
+        remove_vertex_crease.draw_panel_ui(layout, context)
 
 def register():
     bpy.utils.register_class(SweaterparrotFunctionsPanel)
@@ -43,11 +44,11 @@ def register():
     remove_vertex_crease.register()
 
 def unregister():
-    toggle_all_lattice_modifiers.unregister()
-    update_all_emission_colors.unregister()
-    toggle_global_local_keybinding.unregister()
-    mark_sharp_as_seam_and_unwrap.unregister()
     remove_vertex_crease.unregister()
+    mark_sharp_as_seam_and_unwrap.unregister()
+    toggle_global_local_keybinding.unregister()
+    update_all_emission_colors.unregister()
+    toggle_all_lattice_modifiers.unregister()
 
     bpy.utils.unregister_class(SweaterparrotFunctionsPanel)
 

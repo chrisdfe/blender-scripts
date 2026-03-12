@@ -13,17 +13,17 @@ def execute(self, context):
 
     return {'FINISHED'}
 
-def register(self):
+def register():
     bpy.types.Scene.global_lattice_show_viewport = bpy.props.BoolProperty(
         name="Show/hide all lattice objects in scene",
         default=True,
         update=execute
     )
 
-def unregister(self):
+def unregister():
     del bpy.types.Scene.global_lattice_show_viewport
 
-def draw(self, layout, context):
+def draw_panel_ui(layout, context):
     scene = context.scene
 
     row = layout.row()
