@@ -95,10 +95,13 @@ def pack_rgb_color_attributes_in_obj(obj):
   If a color channel for a specific color is missing, then that channel will be set to black.
   If none of these channel color attributes are present (i.e if the object has 0 or only 1 color attribute) then no data will be written.
   """
-
+  if obj.type != 'MESH':
+    print(f"Object {obj.name} is not a mesh (is {obj.type}). skipping")
+    return
+ 
   mesh = obj.data
   if not mesh.color_attributes:
-    print(f"Object {obj.name} has no color attribute layers")
+    print(f"Object {obj.name} has no color attribute layers. skipping")
     return
 
   if len(mesh.color_attributes) == 1:
@@ -157,10 +160,5 @@ def pack_rgb_color_attributes_in_selected():
     raise RuntimeError("User must be in Object Mode to run this script.")
 
   for obj in bpy.context.selected_objects:
-    if obj.type != 'MESH':
-      print(f"Object {obj.name} is not a mesh (is {obj.type}). skipping")
-      continue
-  
     pack_rgb_color_attributes_in_obj(obj)
     
-pack_rgb_color_attributes_in_selected()
