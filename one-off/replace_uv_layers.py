@@ -1,6 +1,6 @@
 import bpy
 
-def replace_uv_maps(new_layer_names):
+def replace_uv_layers(new_layer_names):
     obj = bpy.context.active_object
     
     if obj is None:

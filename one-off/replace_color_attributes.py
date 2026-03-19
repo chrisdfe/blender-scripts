@@ -19,15 +19,6 @@ def import_one_off_module(module_name):
   return importlib.import_module(module_name) 
 
 pack_rgba_color_attributes = import_one_off_module("pack_rgba_color_attributes")
-print(pack_rgba_color_attributes)
-
-BLACK = (0.0, 0.0, 0.0, 0.0)
-WHITE = (1.0, 1.0, 1.0, 1.0)
-
-WATER_REFLECTION_SURFACE_COLOR_ATTRIBUTES = [
-  ("VertexColor", BLACK),
-  ("ReflectionIntensity (R)", WHITE)
-]
 
 def replace_color_attributes(obj, new_channel_configs):
   if not obj or obj.type != 'MESH':
@@ -69,8 +60,3 @@ def replace_color_attributes_in_selected_and_pack(new_channel_configs):
   for obj in bpy.context.selected_objects:
     replace_color_attributes(obj, new_channel_configs)
     pack_rgba_color_attributes.pack_rgb_color_attributes_in_obj(obj)
-
-
-#replace_color_attributes_in_selected(WATER_REFLECTION_SURFACE_COLOR_ATTRIBUTES)
-#pack_rgba_color_attributes.pack_rgb_color_attributes_in_selected()
-replace_color_attributes_in_selected_and_pack(WATER_REFLECTION_SURFACE_COLOR_ATTRIBUTES)

@@ -1,12 +1,14 @@
-# 
-# Copy & paste all of this to the top of the file to be able to import one-off functions
-# 
 import sys
 import os
 import importlib
+from types import SimpleNamespace
 
-# Make sure this is the right directory obviously
-SWEATERPARROT_FUNCTIONS_ONE_OFF_DIR = "Q:/Documents/projets/blender-scripts/one-off/"
+MODULES_TO_IMPORT = [
+    # Add individual modules here
+]
+
+# Change this if neccessary
+MODULES_DIR = "Q:/Documents/projects/blender-scripts/one-off/"
 
 def import_from_disk(module_name, module_path):
     abs_path = os.path.abspath(module_path)
@@ -22,8 +24,19 @@ def import_from_disk(module_name, module_path):
     
     return importlib.import_module(module_name)
   
-import_from_disk(SWEATERPARROT_FUNCTIONS_ONE_OFF_DIR)
+def import_all_from_disk(module_names, module_path):
+    result_dict = {} 
 
-# Use imported modules here
-# e.g
-# replace_color_attributes = import_from_disk("replace_color_attributes", SWEATERPARROT_FUNCTIONS_ONE_OFF_DIR)
+    for module_name in module_names:
+        imported_module = import_from_disk(module_name, module_path)
+        imports = {k: v for k, v in vars(imported_module).items() if not k.startswith('_')}
+        result_dict.update(imports)
+
+    result = SimpleNamespace(**result_dict)
+    return result
+
+# Import like this:
+# tools = import_all_from_disk(MODULES_TO_IMPORT, MODULES_DIR)
+
+# Use like this
+# tools.select_all_with_material("Water")

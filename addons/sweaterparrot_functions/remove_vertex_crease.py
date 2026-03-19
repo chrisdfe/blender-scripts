@@ -26,7 +26,7 @@ class RemoveVertexCreaseButton(bpy.types.Operator):
 
 def draw_menu(self, context):
     layout = self.layout
-    layout.operator("mesh.remove_vertex_crease", "Remove Vertex Crease", icon ='TRASH')
+    layout.operator("mesh.remove_vertex_crease", text="Remove Vertex Crease", icon ='TRASH')
 
 def register():
     bpy.utils.register_class(RemoveVertexCrease)

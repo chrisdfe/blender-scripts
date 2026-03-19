@@ -1,8 +1,8 @@
 import bpy
 import bmesh
 import bl_math
-from mathutils import Color
 
+from mathutils import Color
 from collections import deque
 
 def set_vertex_colors(vertices, color_attribute, color):
@@ -118,5 +118,3 @@ def create_color_attribute_gradient(from_color, to_color, distance, color_attibu
     
   mesh.update() 
   bpy.ops.object.mode_set(mode='EDIT')
-
-# create_color_attribute_gradient((1.0, 1.0, 1.0), (0.0, 0.0, 0.0), 3, "NoiseIntensity")
